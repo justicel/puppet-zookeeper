@@ -3,6 +3,7 @@ class zookeeper::config (
   $datadir    = $zookeeper::params::zookeeper_datadir,
   $clientport = $zookeeper::params::zookeeper_clientport,
   $group      = 'default',
+  $myid       = fqdn_rand(50),
 ) {
 
   #Add concat setup just in case
@@ -34,6 +35,13 @@ class zookeeper::config (
     target  => "${homedir}/conf/zoo.cfg",
     order   => '01',
     content => template('zookeeper/zoo.cfg.header.erb'),
+  }
+
+  #Add myid file to each node configured
+  file { "${datadir}/myid":
+    ensure  => present,
+    content => $myid,
+    require => File[$datadir],
   }
 
   #Collect exported servers and realize to the zookeeper config file
