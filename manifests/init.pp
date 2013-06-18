@@ -62,7 +62,7 @@ class zookeeper (
     home       => $home,
     datadir    => $datadir,
     clientport => $clientport,
-    $group     => $server_group,
+    group      => $server_group,
   }
 
 }
