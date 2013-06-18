@@ -37,7 +37,7 @@
 #
 class zookeeper (
   $version      = $zookeeper::params::zookeeper_version,
-  $home         = $zookeeper::params::zookeeper_home,
+  $homedir      = $zookeeper::params::zookeeper_home,
   $datadir      = $zookeeper::params::zookeeper_datadir,
   $clientport   = $zookeeper::params::zookeeper_clientport,
   $server_name  = $::fqdn,
@@ -48,18 +48,18 @@ class zookeeper (
   #Add node to cluster with stored config
   @@zookeeper::servernode { "${server_name}":
     group => $server_group,
-    home  => $home,
+    home  => $homedir,
   }
 
   #Download and install the zookeeper source
   class { 'zookeeper::install':
     version     => $version,
-    home        => $home,
+    home        => $homedir,
     datadir     => $datadir,
   }
 
   class { 'zookeeper::config':
-    home       => $home,
+    home       => $homedir,
     datadir    => $datadir,
     clientport => $clientport,
     group      => $server_group,

@@ -1,5 +1,5 @@
 class zookeeper::config (
-  $home       = $zookeeper::params::zookeeper_home,
+  $homedir    = $zookeeper::params::zookeeper_home,
   $datadir    = $zookeeper::params::zookeeper_datadir,
   $clientport = $zookeeper::params::zookeeper_clientport,
   $group      = 'default',
@@ -9,7 +9,7 @@ class zookeeper::config (
   include concat::setup
 
   #File definition for the home folder for zookeeper
-  file { $home:
+  file { $homedir:
     ensure => directory,
     owner  => 'root',
     group  => 'root',
@@ -24,14 +24,14 @@ class zookeeper::config (
   }
 
   #Define zookeeper config file for cluster
-  concat { "${home}/conf/zoo.cfg":
+  concat { "${homedir}/conf/zoo.cfg":
     owner   => '0',
     group   => '0',
     mode    => '0644',
     require => Exec['zookeeper-install'],
   }
   concat::fragment { '00_zookeeper_header':
-    target  => "${home}/conf/zoo.cfg":
+    target  => "${homedir}/conf/zoo.cfg":
     order   => '01',
     content => template('zookeeper/zoo.cfg.header.erb'),
   }

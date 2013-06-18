@@ -1,7 +1,7 @@
 define zookeeper::servernode (
   $server_name = $name,
   $group       = 'default',
-  $home        = $zookeeper::params::home,
+  $homedir     = $zookeeper::params::home,
   $myid        = fqdn_rand(50),
 ) {
 
@@ -9,7 +9,7 @@ define zookeeper::servernode (
 
   concat::fragment { "${group}_zookeeper_service_${name}":
     order   => "10-${group}-${server_name}",
-    target  => "${home}/conf/zoo.cfg",
+    target  => "${homedir}/conf/zoo.cfg",
     content => template('zookeeper/zoonode.erb'),
   }
 

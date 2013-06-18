@@ -1,7 +1,7 @@
 class zookeeper::install (
   $mirror  = $zookeeper::params::zookeeper_mirror,
   $version = $zookeeper::params::zookeeper_version,
-  $home    = $zookeeper::params::zookeeper_home,
+  $homedir = $zookeeper::params::zookeeper_home,
   $datadir = $zookeeper::params::zookeeper_datadir,
 ) {
 
@@ -23,11 +23,11 @@ class zookeeper::install (
     notify  => Exec['zookeeper-install'],
   }
   exec { 'zookeeper-install':
-    command => "rsync -auzp --exclude=\"src\" /var/tmp/zookeeper-${version}/ ${home}",
-    creates => "${home}/zookeeper-${version}.jar",
+    command => "rsync -auzp --exclude=\"src\" /var/tmp/zookeeper-${version}/ ${homedir}",
+    creates => "${homedir}/zookeeper-${version}.jar",
     path    => ['/usr/bin', '/usr/sbin', '/sbin', 'bin'],
 #    notify  => Service['zookeeper'],
-    require => File[$home],
+    require => File[$homedir],
   }
 
 }
