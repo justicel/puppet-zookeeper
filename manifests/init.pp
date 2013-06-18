@@ -47,19 +47,19 @@ class zookeeper (
 
   #Add node to cluster with stored config
   @@zookeeper::servernode { "${server_name}":
-    group => $server_group,
-    home  => $homedir,
+    group   => $server_group,
+    homedir => $homedir,
   }
 
   #Download and install the zookeeper source
   class { 'zookeeper::install':
     version     => $version,
-    home        => $homedir,
+    homedir     => $homedir,
     datadir     => $datadir,
   }
 
   class { 'zookeeper::config':
-    home       => $homedir,
+    homedir    => $homedir,
     datadir    => $datadir,
     clientport => $clientport,
     group      => $server_group,
