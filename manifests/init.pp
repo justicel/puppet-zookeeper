@@ -40,7 +40,7 @@ class zookeeper (
   $home         = $zookeeper::params::zookeeper_home,
   $datadir      = $zookeeper::params::zookeeper_datadir,
   $clientport   = $zookeeper::params::zookeeper_clientport,
-  $server_name  = $::fqdn
+  $server_name  = $::fqdn,
   $server_group = 'default'
 ) inherits zookeeper::params
 {
