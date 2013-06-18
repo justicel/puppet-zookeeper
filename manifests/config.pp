@@ -20,7 +20,7 @@ class zookeeper::config (
     ensure   => directory,
     owner    => 'root',
     group    => 'root',
-    requires => File[$home],
+    requires => File[$homedir],
   }
 
   #Define zookeeper config file for cluster
