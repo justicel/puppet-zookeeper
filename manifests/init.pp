@@ -65,4 +65,6 @@ class zookeeper (
     group      => $server_group,
   }
 
+  class { 'zookeeper::server': }
+
 }
