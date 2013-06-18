@@ -5,6 +5,9 @@ class zookeeper::install (
   $datadir = $zookeeper::params::zookeeper_datadir,
 ) {
 
+  #Install java package
+  package { $zookeeper::params::java_package }
+
   #Download and extract the zookeeper archive
   exec { 'zookeeper-get':
     command => "wget ${mirror}/zookeeper-${version}/zookeeper-${version}.tar.gz \
@@ -27,7 +30,7 @@ class zookeeper::install (
     creates => "${homedir}/zookeeper-${version}.jar",
     path    => ['/usr/bin', '/usr/sbin', '/sbin', 'bin'],
 #    notify  => Service['zookeeper'],
-    require => File[$homedir],
+    require => [ File[$homedir], Package[$zookeeper::params::java_package] ],
   }
 
 }
