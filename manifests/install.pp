@@ -6,7 +6,7 @@ class zookeeper::install (
 ) {
 
   #Install java package
-  package { $zookeeper::params::java_package }
+  package { $zookeeper::params::java_package: }
 
   #Download and extract the zookeeper archive
   exec { 'zookeeper-get':
