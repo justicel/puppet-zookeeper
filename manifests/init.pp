@@ -41,12 +41,12 @@ class zookeeper (
   $datadir      = $zookeeper::params::zookeeper_datadir,
   $clientport   = $zookeeper::params::zookeeper_clientport,
   $server_name  = $::fqdn,
-  $server_group = 'default'
+  $server_group = 'default',
 ) inherits zookeeper::params
 {
 
   #Add node to cluster with stored config
-  @@zookeeper::servernode { $server_name:
+  @@zookeeper::servernode { "${server_name}":
     group => $server_group,
     home  => $home,
   }
