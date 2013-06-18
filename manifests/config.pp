@@ -31,7 +31,7 @@ class zookeeper::config (
     require => Exec['zookeeper-install'],
   }
   concat::fragment { '00_zookeeper_header':
-    target  => "${homedir}/conf/zoo.cfg":
+    target  => "${homedir}/conf/zoo.cfg",
     order   => '01',
     content => template('zookeeper/zoo.cfg.header.erb'),
   }
