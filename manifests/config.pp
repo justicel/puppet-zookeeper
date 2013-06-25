@@ -26,7 +26,7 @@ class zookeeper::config (
   }
   
   #Log folder
-  file { $datadir:
+  file { $logdir:
     ensure   => directory,
     owner    => 'root',
     group    => 'root',
