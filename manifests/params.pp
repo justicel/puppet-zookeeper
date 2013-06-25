@@ -4,6 +4,7 @@ class zookeeper::params {
   $zookeeper_mirror     = 'http://mirrors.sonic.net/apache/zookeeper'
   $zookeeper_home       = '/opt/zookeeper'
   $zookeeper_datadir    = "${zookeeper::params::zookeeper_home}/data"
+  $zookeeper_logdir     = "${zookeeper::params::zookeeper_home}/logs"
   $zookeeper_clientport = '2181'
 
   case $::operatingsystem {

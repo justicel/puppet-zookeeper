@@ -39,6 +39,7 @@ class zookeeper (
   $version      = $zookeeper::params::zookeeper_version,
   $homedir      = $zookeeper::params::zookeeper_home,
   $datadir      = $zookeeper::params::zookeeper_datadir,
+  $logdir       = $zookeeper::params::zookeeper_logdir,
   $clientport   = $zookeeper::params::zookeeper_clientport,
   $server_name  = $::fqdn,
   $server_group = 'default',
@@ -56,11 +57,13 @@ class zookeeper (
     version     => $version,
     homedir     => $homedir,
     datadir     => $datadir,
+    logdir      => $logdir,
   }
 
   class { 'zookeeper::config':
     homedir    => $homedir,
     datadir    => $datadir,
+    logdir     => $logdir,
     clientport => $clientport,
     group      => $server_group,
   }

@@ -1,6 +1,7 @@
 class zookeeper::config (
   $homedir    = $zookeeper::params::zookeeper_home,
   $datadir    = $zookeeper::params::zookeeper_datadir,
+  $logdir     = $zookeeper::params::zookeeper_logdir,
   $clientport = $zookeeper::params::zookeeper_clientport,
   $group      = 'default',
   $myid       = fqdn_rand(50),
@@ -17,6 +18,14 @@ class zookeeper::config (
   }
 
   #Zookeeper datadir
+  file { $datadir:
+    ensure   => directory,
+    owner    => 'root',
+    group    => 'root',
+    require  => File[$homedir],
+  }
+  
+  #Log folder
   file { $datadir:
     ensure   => directory,
     owner    => 'root',
@@ -46,6 +55,5 @@ class zookeeper::config (
 
   #Collect exported servers and realize to the zookeeper config file
   Zookeeper::Servernode <<| group == $group |>>
-
 
 }

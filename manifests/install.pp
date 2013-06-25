@@ -3,6 +3,7 @@ class zookeeper::install (
   $version = $zookeeper::params::zookeeper_version,
   $homedir = $zookeeper::params::zookeeper_home,
   $datadir = $zookeeper::params::zookeeper_datadir,
+  $logdir  = $zookeeper::params::zookeeper_logdir,
 ) {
 
   #Install java package
