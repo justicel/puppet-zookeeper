@@ -1,3 +1,41 @@
+# == Class: zookeeper::config
+#
+# Configuration class for zookeeper. Allows you to specify a configuration for
+# zookeeper nodes. Generally not launched directly.
+#
+# === Parameters
+#
+# [*homedir*]
+#   Defines where the zookeeper 'home' folder will be. Default param used.
+# [*datadir*]
+#   Where to store the zookeeper data files. Can be different from home.
+# [*logdir*]
+#   Storage location for all of the zookeeper logs. Generally should be the
+#   home-folder.
+# [*clientport*]
+#   The port used for communications with the zookeeper cluster by client
+#   scripts or programs.
+# [*group*]
+#   Which zookeeper group this configuration is a member of.
+# [*myid*]
+#   An ID to identify the particular zookeeper server. Defaults to a rand.
+#
+# === Examples
+#
+#  class { 'zookeeper::config':
+#    group => 'clustertwo',
+#    myid  => '1',
+#  }
+#
+# === Authors
+#
+# Justice London <jlondon@syrussystems.com>
+#
+# === Copyright
+#
+# Copyright 2013 Justice London, unless otherwise noted.
+#
+
 class zookeeper::config (
   $homedir    = $zookeeper::params::zookeeper_home,
   $datadir    = $zookeeper::params::zookeeper_datadir,
@@ -24,7 +62,7 @@ class zookeeper::config (
     group    => 'root',
     require  => File[$homedir],
   }
-  
+
   #Log folder
   file { $logdir:
     ensure   => directory,

@@ -1,39 +1,41 @@
 # == Class: zookeeper
 #
-# Full description of class zookeeper here.
+# Defines a default cluster member for zookeeper and configures it
 #
 # === Parameters
 #
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
-# === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if it
-#   has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should not be used in preference to class parameters  as of
-#   Puppet 2.6.)
+# [*version*]
+#   The version of zookeeper to install.
+# [*homedir*]
+#   Defines where the zookeeper 'home' folder will be. Default param used.
+# [*datadir*]
+#   Where to store the zookeeper data files. Can be different from home.
+# [*logdir*]
+#   Storage location for all of the zookeeper logs. Generally should be the
+#   home-folder.
+# [*clientport*]
+#   The port used for communications with the zookeeper cluster by client
+#   scripts or programs.
+# [*server_name*]
+#   The actual name to use to identify the particular server-node.
+# [*server_group*]
+#   Which zookeeper group this configuration is a member of.
 #
 # === Examples
 #
-#  class { zookeeper:
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ]
+#  class { 'zookeeper':
+#    version      => '0.0.1',
+#    server_name  => $::fqdn,
+#    server_group => 'default',
 #  }
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# Justice London <jlondon@syrussystems.com>
 #
 # === Copyright
 #
-# Copyright 2013 Your name here, unless otherwise noted.
+# Copyright 2013 Justice London, unless otherwise noted.
 #
 class zookeeper (
   $version      = $zookeeper::params::zookeeper_version,
@@ -47,7 +49,7 @@ class zookeeper (
 {
 
   #Add node to cluster with stored config
-  @@zookeeper::servernode { "${server_name}":
+  @@zookeeper::servernode { $server_name:
     group   => $server_group,
     homedir => $homedir,
   }

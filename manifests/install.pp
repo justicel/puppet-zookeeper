@@ -1,3 +1,34 @@
+# == Class: zookeeper::install
+#
+# Install class for zookeeper. Takes care of package installation, etc.
+#
+# === Parameters
+#
+# [*mirror*]
+#   The location to download the installer from.
+# [*version*]
+#   The version of zookeeper to install.
+# [*homedir*]
+#   Install location for the final zookeeper package.
+# [*datadir*]
+#   Where to store/configure the zookeeper data.
+# [*logdir*]
+#   Storage location for zookeeper logs.
+#
+# === Examples
+#
+#  class { 'zookeeper::install':
+#    mirror => 'http://www.mymirror.com/zookeeper-package',
+#  }
+#
+# === Authors
+#
+# Justice London <jlondon@syrussystems.com>
+#
+# === Copyright
+#
+# Copyright 2013 Justice London, unless otherwise noted.
+#
 class zookeeper::install (
   $mirror  = $zookeeper::params::zookeeper_mirror,
   $version = $zookeeper::params::zookeeper_version,

@@ -1,3 +1,4 @@
+#Basic parameter options for zookeeper, including mirrors location etc.
 class zookeeper::params {
 
   $zookeeper_version    = '3.4.5'
