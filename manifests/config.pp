@@ -35,7 +35,6 @@
 #
 # Copyright 2013 Justice London, unless otherwise noted.
 #
-
 class zookeeper::config (
   $homedir    = $zookeeper::params::zookeeper_home,
   $datadir    = $zookeeper::params::zookeeper_datadir,
