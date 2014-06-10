@@ -30,7 +30,7 @@
 define zookeeper::servernode (
   $server_name = $name,
   $group       = 'default',
-  $homedir     = $zookeeper::params::home,
+  $homedir     = $zookeeper::params::zookeeper_home,
   $myid        = fqdn_rand(50),
 ) {
 
