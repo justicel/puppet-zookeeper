@@ -36,12 +36,13 @@
 # Copyright 2013 Justice London, unless otherwise noted.
 #
 class zookeeper::config (
-  $homedir    = $zookeeper::params::zookeeper_home,
-  $datadir    = $zookeeper::params::zookeeper_datadir,
-  $logdir     = $zookeeper::params::zookeeper_logdir,
-  $clientport = $zookeeper::params::zookeeper_clientport,
-  $group      = 'default',
-  $myid       = fqdn_rand(50),
+  $homedir         = $zookeeper::params::zookeeper_home,
+  $datadir         = $zookeeper::params::zookeeper_datadir,
+  $logdir          = $zookeeper::params::zookeeper_logdir,
+  $clientport      = $zookeeper::params::zookeeper_clientport,
+  $server_list     = $zookeeper::params::server_list,
+  $group           = 'default',
+  $myid            = fqdn_rand(50),
 ) {
 
   #Add concat setup just in case
@@ -90,7 +91,15 @@ class zookeeper::config (
     require => File[$datadir],
   }
 
-  #Collect exported servers and realize to the zookeeper config file
-  Zookeeper::Servernode <<| group == $group |>>
+  if (size($server_list) == 0) {
+    #Collect exported servers and realize to the zookeeper config file
+    Zookeeper::Servernode <<| group == $group |>>
+  } else {
+    # Use a custom list of servers, in the form of an array
+    zookeeper::servernode {
+      $server_list:
+        group => $group
+    }
+  }
 
 }

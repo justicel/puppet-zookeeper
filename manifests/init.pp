@@ -39,14 +39,17 @@
 #
 class zookeeper (
   $version      = $zookeeper::params::zookeeper_version,
+  $manage_java  = $zookeeper::params::manage_java,
   $homedir      = $zookeeper::params::zookeeper_home,
   $datadir      = $zookeeper::params::zookeeper_datadir,
   $logdir       = $zookeeper::params::zookeeper_logdir,
   $clientport   = $zookeeper::params::zookeeper_clientport,
+  $server_list  = $zookeeper::params::server_list,
   $server_name  = $::fqdn,
   $server_group = 'default',
 ) inherits zookeeper::params
 {
+  validate_array($server_list)
 
   #Add node to cluster with stored config
   @@zookeeper::servernode { $server_name:
@@ -57,17 +60,19 @@ class zookeeper (
   #Download and install the zookeeper source
   class { 'zookeeper::install':
     version     => $version,
+    manage_java => $manage_java,
     homedir     => $homedir,
     datadir     => $datadir,
     logdir      => $logdir,
   }
 
   class { 'zookeeper::config':
-    homedir    => $homedir,
-    datadir    => $datadir,
-    logdir     => $logdir,
-    clientport => $clientport,
-    group      => $server_group,
+    homedir         => $homedir,
+    datadir         => $datadir,
+    logdir          => $logdir,
+    clientport      => $clientport,
+    server_list_csv => $server_list_csv,
+    group           => $server_group,
   }
 
   class { 'zookeeper::server': }

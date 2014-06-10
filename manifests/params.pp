@@ -7,15 +7,19 @@ class zookeeper::params {
   $zookeeper_datadir    = "${zookeeper::params::zookeeper_home}/data"
   $zookeeper_logdir     = "${zookeeper::params::zookeeper_home}/logs"
   $zookeeper_clientport = '2181'
+  $manage_java          = true
+  $server_list          = []
 
-  case $::operatingsystem {
-    'RedHat', 'CentOS': {
-      $java_package = 'java-1.7.0-openjdk'
+  if ($manage_java == true) {
+    case $::operatingsystem {
+      'RedHat', 'CentOS': {
+        $java_package = 'java-1.7.0-openjdk'
+      }
+      'Debian', 'Ubuntu': {
+        $java_package = 'openjdk-7-jdk'
+      }
+      default: { }
     }
-    'Debian', 'Ubuntu': {
-      $java_package = 'openjdk-7-jdk'
-    }
-    default: { }
   }
 
 }

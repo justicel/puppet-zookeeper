@@ -30,15 +30,18 @@
 # Copyright 2013 Justice London, unless otherwise noted.
 #
 class zookeeper::install (
-  $mirror  = $zookeeper::params::zookeeper_mirror,
-  $version = $zookeeper::params::zookeeper_version,
-  $homedir = $zookeeper::params::zookeeper_home,
-  $datadir = $zookeeper::params::zookeeper_datadir,
-  $logdir  = $zookeeper::params::zookeeper_logdir,
+  $mirror      = $zookeeper::params::zookeeper_mirror,
+  $version     = $zookeeper::params::zookeeper_version,
+  $manage_java = $zookeeper::params::manage_java,
+  $homedir     = $zookeeper::params::zookeeper_home,
+  $datadir     = $zookeeper::params::zookeeper_datadir,
+  $logdir      = $zookeeper::params::zookeeper_logdir,
 ) {
 
-  #Install java package
-  package { $zookeeper::params::java_package: }
+  if ($manage_java) {
+    #Install java package
+    package { $zookeeper::params::java_package: }
+  }
 
   #Download and extract the zookeeper archive
   exec { 'zookeeper-get':
