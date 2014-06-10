@@ -38,7 +38,7 @@ class zookeeper::install (
   $logdir      = $zookeeper::params::zookeeper_logdir,
 ) {
 
-  if ($manage_java) {
+  if ($manage_java == true) {
     #Install java package
     package { $zookeeper::params::java_package: }
   }

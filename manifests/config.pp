@@ -45,9 +45,6 @@ class zookeeper::config (
   $myid            = fqdn_rand(50),
 ) {
 
-  #Add concat setup just in case
-  include concat::setup
-
   #File definition for the home folder for zookeeper
   file { $homedir:
     ensure => directory,
