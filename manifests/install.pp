@@ -41,9 +41,9 @@ class zookeeper::install (
   if ($manage_java == true) {
     #Install java package
     package { $zookeeper::params::java_package: }
-    $install_require = [ File[$homedir] ]
-  } else {
     $install_require = [ File[$homedir], Package[$zookeeper::params::java_package] ]
+  } else {
+    $install_require = [ File[$homedir] ]
   }
 
   #Download and extract the zookeeper archive
