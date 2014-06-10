@@ -52,9 +52,12 @@ class zookeeper (
   validate_array($server_list)
 
   #Add node to cluster with stored config
-  @@zookeeper::servernode { $server_name:
-    group   => $server_group,
-    homedir => $homedir,
+  if (size($server_list) == 0) {
+    # Only required if we are not using the custom server_list parameter.
+    @@zookeeper::servernode { $server_name:
+      group   => $server_group,
+      homedir => $homedir,
+    }
   }
 
   #Download and install the zookeeper source
@@ -67,12 +70,12 @@ class zookeeper (
   }
 
   class { 'zookeeper::config':
-    homedir         => $homedir,
-    datadir         => $datadir,
-    logdir          => $logdir,
-    clientport      => $clientport,
-    server_list_csv => $server_list_csv,
-    group           => $server_group,
+    homedir     => $homedir,
+    datadir     => $datadir,
+    logdir      => $logdir,
+    clientport  => $clientport,
+    server_list => $server_list,
+    group       => $server_group,
   }
 
   class { 'zookeeper::server': }
