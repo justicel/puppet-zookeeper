@@ -51,5 +51,8 @@ class zookeeper::server (
         }
       }
     }
-
+    default: {
+      crit('Undefined or invalid input parameter install_method, cannot proceed')
+    }
+  }
 }
