@@ -24,8 +24,6 @@
 #   Install location for the final zookeeper package.
 # [*datadir*]
 #   Where to store/configure the zookeeper data.
-# [*logdir*]
-#   Storage location for zookeeper logs.
 #
 # === Examples
 #
@@ -49,27 +47,27 @@ class zookeeper::install (
   $manage_java    = $zookeeper::params::manage_java,
   $homedir        = undef,
   $datadir        = undef,
-  $logdir         = undef,
 ) {
   case $install_method {
     'wget': {
       # Set some sane defaults for homedir/datadir/logdir.
       if ($homedir == undef) {
-        $homedir = $zookeeper::params::zookeeper_wget_homedir
+        $use_homedir = $zookeeper::params::zookeeper_wget_homedir
+      } else {
+        $use_homedir = $homedir
       }
       if ($datadir == undef) {
-        $datadir = $zookeeper::params::zookeeper_wget_datadir
-      }
-      if ($logdir == undef) {
-        $logdir = $zookeeper::params::zookeeper_wget_logdir
+        $use_datadir = $zookeeper::params::zookeeper_wget_datadir
+      } else {
+        $use_datadir = $datadir
       }
       #Determine if we manage Java with this module.
       if ($manage_java == true) {
         #Install java package
         package { $zookeeper::params::java_package: }
-        $install_require = [ File[$homedir], Package[$zookeeper::params::java_package] ]
+        $install_require = [ File[$use_homedir], Package[$zookeeper::params::java_package] ]
       } else {
-        $install_require = [ File[$homedir] ]
+        $install_require = [ File[$use_homedir] ]
       }
       #Download and extract the zookeeper archive
       exec { 'zookeeper-get':

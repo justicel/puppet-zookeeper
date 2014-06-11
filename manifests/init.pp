@@ -149,7 +149,6 @@ class zookeeper (
     manage_java    => $manage_java,
     homedir        => $use_homedir,
     datadir        => $use_datadir,
-    logdir         => $use_logdir,
   }
 
   class { 'zookeeper::config':

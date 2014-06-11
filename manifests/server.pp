@@ -13,6 +13,11 @@
 # [*manage_service*]
 #   Applicable when using install_method = deb. If set to true, service resource will be created.
 #   Defaults to true.
+# [*homedir*]
+#   Only applicable if install_method = wget.
+#   Install location for the final zookeeper package.
+# [*datadir*]
+#   Where to store/configure the zookeeper data.
 #
 # === Authors
 #
@@ -26,16 +31,30 @@
 class zookeeper::server (
   $install_method = $zookeeper::params::install_method,
   $manage_service = $zookeeper::params::manage_service,
+  $homedir        = undef,
+  $datadir        = undef,
 ) {
   case $install_method {
     'wget': {
+      # Set some sane defaults for homedir/datadir.
+      if ($homedir == undef) {
+        $use_homedir = $zookeeper::params::zookeeper_wget_homedir
+      } else {
+        $use_homedir = $homedir
+      }
+      if ($datadir == undef) {
+        $use_datadir = $zookeeper::params::zookeeper_wget_datadir
+      } else {
+        $use_datadir = $datadir
+      }
+      # Handle our service startup, without an init script.
       exec { 'zookeeper-start':
         command => 'zkServer.sh restart',
-        cwd     => "${zookeeper::params::zookeeper_home}/bin",
+        cwd     => "${use_homedir}/bin",
         path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin',
-                    "${zookeeper::params::zookeeper_home}/bin"
+                    "${use_homedir}/bin"
         ],
-        require => File[$zookeeper::params::zookeeper_home],
+        require => File[$use_homedir],
         unless  => "netstat -ln | grep ':3888'",
       }
     }
@@ -47,7 +66,7 @@ class zookeeper::server (
             enable     => true,
             hasrestart => true,
             hasstatus  => true,
-            require    => Package['zookeeper'],
+            require    => [Package['zookeeper'], File["${use_datadir}/myid"]],
         }
       }
     }
