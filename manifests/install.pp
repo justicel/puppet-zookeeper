@@ -15,7 +15,7 @@
 # [*version*]
 #   The version of zookeeper to install.
 #   If install_method = wget, format should be a version number. Example - 3.4.6
-#   If install_method = deb, format should be a debian package version number. Example - 3.4.6-1
+#   If install_method = deb, format should be a debian package version number.
 # [*manage_java*]
 #   Boolean, which determines if this module depends on the Java package being installed.
 #   Defaults to true.
