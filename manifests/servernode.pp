@@ -11,6 +11,7 @@
 # [*group*]
 #   The group this server should live in.
 # [*homedir*]
+#   Only applicable if install_method = wget.
 #   Where zookeeper lives.
 # [*myid*]
 #   A randomized ID to define this server in the cluster.
@@ -25,16 +26,18 @@
 # === Authors
 #
 # Justice London <jlondon@syrussystems.com>
+# Nathan Sullivan <nathan@nightsys.net>
 #
 # === Copyright
 #
 # Copyright 2013 Justice London, unless otherwise noted.
 #
 define zookeeper::servernode (
-  $server_name = $name,
-  $group       = 'default',
-  $homedir     = $zookeeper::params::zookeeper_home,
-  $myid        = fqdn_rand(50),
+  $server_name  = $name,
+  $group        = 'default',
+  $homedir      = $zookeeper::params::zookeeper_home,
+  $myid         = fqdn_rand(50),
+  $cfg_filename = "${homedir}/conf/zoo.cfg"
 ) {
 
   include zookeeper::params
@@ -55,7 +58,7 @@ define zookeeper::servernode (
 
   concat::fragment { "${group}_zookeeper_service_${name}":
     order   => "10-${group}-${use_server_name}",
-    target  => "${homedir}/conf/zoo.cfg",
+    target  => $cfg_filename,
     content => template('zookeeper/zoonode.erb'),
   }
 
