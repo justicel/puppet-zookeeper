@@ -16,6 +16,10 @@
 # [*clientport*]
 #   The port used for communications with the zookeeper cluster by client
 #   scripts or programs.
+# [*server_list*]
+#   A hash of servers, used in place of exported resources. Can be provided from anywhere
+#   (eg. an alternative service discovery system). Keys are "myid" entries, and values
+#   are the hostnames.
 # [*server_name*]
 #   The actual name to use to identify the particular server-node.
 # [*server_group*]
@@ -49,10 +53,10 @@ class zookeeper (
   $server_group = 'default',
 ) inherits zookeeper::params
 {
-  validate_array($server_list)
+  validate_hash($server_list)
 
   #Add node to cluster with stored config
-  if (size($server_list) == 0) {
+  if (zookeeper_servers_list_empty($server_list) == true) {
     # Only required if we are not using the custom server_list parameter.
     @@zookeeper::servernode { $server_name:
       group   => $server_group,

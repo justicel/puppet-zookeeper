@@ -15,10 +15,15 @@
 # [*clientport*]
 #   The port used for communications with the zookeeper cluster by client
 #   scripts or programs.
+# [*server_list*]
+#   A hash of servers, used in place of exported resources. Can be provided from anywhere
+#   (eg. an alternative service discovery system). Keys are "myid" entries, and values
+#   are the hostnames.
 # [*group*]
 #   Which zookeeper group this configuration is a member of.
 # [*myid*]
 #   An ID to identify the particular zookeeper server. Defaults to a rand.
+#   Only used if server_list is empty, otherwise myid is populated via server_list.
 #
 # === Examples
 #
@@ -42,8 +47,15 @@ class zookeeper::config (
   $clientport      = $zookeeper::params::zookeeper_clientport,
   $server_list     = $zookeeper::params::server_list,
   $group           = 'default',
-  $myid            = fqdn_rand(50),
+  $myid            = undef
 ) {
+  if ($myid != undef) {
+    $use_myid = $myid
+  } elsif (zookeeper_servers_list_empty($server_list) == true) {
+    $use_myid = fqdn_rand(50)
+  } else {
+    $use_myid = get_zookeeper_server_id($server_list, $::fqdn)
+  }
 
   #File definition for the home folder for zookeeper
   file { $homedir:
@@ -84,17 +96,18 @@ class zookeeper::config (
   #Add myid file to each node configured
   file { "${datadir}/myid":
     ensure  => present,
-    content => $myid,
+    content => $use_myid,
     require => File[$datadir],
   }
 
-  if (size($server_list) == 0) {
+  if (zookeeper_servers_list_empty($server_list) == true) {
     #Collect exported servers and realize to the zookeeper config file
     Zookeeper::Servernode <<| group == $group |>>
   } else {
+    $formatted_servers_list = format_zookeeper_servers_and_ids($server_list)
     # Use a custom list of servers, in the form of an array
     zookeeper::servernode {
-      $server_list:
+      $formatted_servers_list:
         group => $group
     }
   }

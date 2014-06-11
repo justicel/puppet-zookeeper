@@ -8,7 +8,7 @@ class zookeeper::params {
   $zookeeper_logdir     = "${zookeeper::params::zookeeper_home}/logs"
   $zookeeper_clientport = '2181'
   $manage_java          = true
-  $server_list          = []
+  $server_list          = {}
 
   if ($manage_java == true) {
     case $::operatingsystem {
