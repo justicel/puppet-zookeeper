@@ -1,6 +1,9 @@
 #!/bin/bash
 
 # Written by Nathan Sullivan <nathan@nightsys.net>
+# Tested on Ubuntu 12.04
+# Make sure some packages are installed first:
+# apt-get install ant autoconf libcppunit-dev libtool python-dev python-setuptools
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
