@@ -92,6 +92,7 @@ class zookeeper::config (
       }
       $zookeeper_cfg_filename = "${use_homedir}/conf/zoo.cfg"
       $homedir_require = [File[$use_homedir]]
+      $install_require = [Exec['zookeeper-install']]
     }
     'deb': {
       if ($service_user == undef) {
@@ -116,6 +117,7 @@ class zookeeper::config (
       }
       $zookeeper_cfg_filename = '/etc/zookeeper/zoo.cfg'
       $homedir_require = [Package['zookeeper']]
+      $install_require = [Package['zookeeper']]
     }
     default: {
       crit('Undefined or invalid input parameter install_method, cannot proceed')
@@ -153,7 +155,7 @@ class zookeeper::config (
     owner   => '0',
     group   => '0',
     mode    => '0644',
-    require => Exec['zookeeper-install'],
+    require => $install_require,
   }
   concat::fragment { '00_zookeeper_header':
     target  => $zookeeper_cfg_filename,
