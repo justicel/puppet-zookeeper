@@ -39,6 +39,11 @@ class zookeeper::install (
 
   #Install java package
   package { $zookeeper::params::java_package: }
+  
+  #Ensure rsync is installed
+  package { 'rsync':
+    ensure => 'installed',
+  }
 
   #Download and extract the zookeeper archive
   exec { 'zookeeper-get':
